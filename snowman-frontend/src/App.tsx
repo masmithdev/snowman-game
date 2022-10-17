@@ -1,11 +1,14 @@
-import './App.css'
+import "./App.css";
+import Button from "./components/Button";
+import Keyboard from "./components/Keyboard";
 
 function App() {
+  const hhhh = "yes";
   return (
     <div className="App">
-      Hello, Snowman!
+      <Keyboard />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

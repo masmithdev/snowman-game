@@ -1,0 +1,28 @@
+.keyboard-key {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.correct .button {
+  background-color: #0f0;
+}
+
+.wrong .button {
+  background-color: #f00;
+}
+
+.busy .button {
+  animation: throb 0.5s ease-in-out infinite;
+}
+
+@keyframes throb {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.9);
+  }
+  75% {
+    transform: scale(1.1);
+  }
+}
