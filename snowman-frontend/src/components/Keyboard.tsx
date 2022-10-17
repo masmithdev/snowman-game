@@ -1,32 +1,27 @@
-import React from "react";
-import Button from "./Button";
+import { observer } from "mobx-react-lite";
+import { useGame } from "../domain/GameProvider";
 import "./keyboard.css";
-import KeyboardKey, { CheckLetterResponse } from "./KeyboardKey";
+import KeyboardKey, { ButtonState } from "./KeyboardKey";
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-function Keyboard() {
-  const handleButtonClick = (letter: string): Promise<CheckLetterResponse> => {
-    return new Promise((res, rej) => {
-      // for now
-      setTimeout(() => {
-        console.log(letter);
-        res("correct");
-      }, 1000);
-    });
-  };
+const Keyboard = observer(() => {
+  const game = useGame();
 
-  const buttons = letters.split("").map((x) => {
-    return (
-      <KeyboardKey
-        key={`button_${x}`}
-        letter={x}
-        checkLetter={() => handleButtonClick(x)}
-      />
-    );
+  console.log(game.guesses);
+  const buttons = letters.split("").map((l) => {
+    let state: ButtonState;
+    if (game.guesses.some((x) => x.letter === l && x.correct)) {
+      state = "correct";
+    } else if (game.guesses.some((x) => x.letter === l && !x.correct)) {
+      state = "wrong";
+    } else {
+      state = "enabled";
+    }
+    return <KeyboardKey key={`button_${l}`} letter={l} buttonState={state} />;
   });
 
   return <div className="keyboard">{buttons}</div>;
-}
+});
 
 export default Keyboard;

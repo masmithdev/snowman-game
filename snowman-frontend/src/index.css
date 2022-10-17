@@ -7,8 +7,13 @@
 html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 
 html {
   font-size: 16px;
+}
+
+#root {
+  height: 100%;
 }

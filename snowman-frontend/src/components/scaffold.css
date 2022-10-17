@@ -1,0 +1,8 @@
+.scaffold {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-items: center;
+  justify-content: center;
+}

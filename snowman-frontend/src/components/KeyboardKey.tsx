@@ -1,44 +1,35 @@
 import React, { useEffect, useState } from "react";
+import { useGame } from "../domain/GameProvider";
 import Button from "./Button";
 import "./keyboardKey.css";
 
-type ButtonState = "enabled" | "checking" | "correct" | "wrong" | "disabled";
-export type CheckLetterResponse = "correct" | "wrong";
+export type ButtonState =
+  | "enabled"
+  | "checking"
+  | "correct"
+  | "wrong"
+  | "disabled";
 interface Props {
   letter: string;
-  checkLetter: (letter: string) => Promise<CheckLetterResponse>;
+  buttonState: ButtonState;
 }
 
-function KeyboardKey({ letter, checkLetter }: Props) {
-  const [state, setState] = useState<ButtonState>("enabled");
-
-  useEffect(() => {
-    const checkLetterAsync = async () => {
-      const response = await checkLetter(letter);
-      if (response === "correct") {
-        setState("correct");
-      } else {
-        setState("wrong");
-      }
-    };
-
-    if (state === "checking") {
-      checkLetterAsync();
-    }
-  }, [state]);
+const KeyboardKey = ({ letter, buttonState }: Props) => {
+  const game = useGame();
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    if (state === "enabled") {
-      setState("checking");
+    if (buttonState === "enabled") {
+      console.log("guessing" + letter);
+      game.makeGuess(letter);
     }
   };
 
   let stateClass = "";
-  if (state === "correct") {
+  if (buttonState === "correct") {
     stateClass = "correct";
-  } else if (state === "wrong") {
+  } else if (buttonState === "wrong") {
     stateClass = "wrong";
-  } else if (state === "checking") {
+  } else if (buttonState === "checking") {
     stateClass = "busy";
   }
 
@@ -47,6 +38,6 @@ function KeyboardKey({ letter, checkLetter }: Props) {
       <Button onClick={handleClick}>{letter}</Button>
     </div>
   );
-}
+};
 
 export default KeyboardKey;

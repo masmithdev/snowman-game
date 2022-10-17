@@ -1,6 +1,7 @@
 .keyboard-key {
   width: 1.5em;
   height: 1.5em;
+  margin: 0.1rem 0.3rem;
 }
 
 .correct .button {
