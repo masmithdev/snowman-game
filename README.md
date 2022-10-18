@@ -15,6 +15,12 @@ The main frontend of the game is built using React. At the moment the phrases us
 
 ## Project Progress
 
+### 2022-10-18 Day 2
+
+Created a backend "rest" API server using ExpressJS with TypeScript which contains an in-memory (for now) repository of games, and provides an API for guesses to be made on the server instead of the frontend - where the solution could be found via some clever JavaScript in the console.
+
+Will look at using the API in the frontend next, and then actually finish a minimal game UI/UX.
+
 ### 2022-10-17 Day 1
 
 First time using Vite to set up a React project. There are suggestions that the bundling/transpiling is faster, which if it is, it's currently negligible, however one BIG bonus over create-react-app... the initial project is nice and clean! I think Vite will be the way forward for future projects (until something else comes out...)
