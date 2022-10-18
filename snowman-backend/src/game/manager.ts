@@ -6,6 +6,18 @@ type NewGameResponse = {
   maskedSolution: string;
 };
 
+export type Guess = {
+  encryptedSolution: string;
+  guesses: string;
+};
+
+type GameStatus = "inProgress" | "win" | "gameOver";
+
+type GuessResponse = {
+  maskedSolution: string;
+  gameStatus: GameStatus;
+};
+
 class GameManager {
   private readonly repository;
 
@@ -13,13 +25,10 @@ class GameManager {
     this.repository = new GameRepository(); // TODO: inject this?
   }
 
-  public getRandomGame = async (): Promise<NewGameResponse> => {
-    const gameCount = await this.repository.count();
-    const game = await this.repository.getGameByIndex(
-      Math.floor(Math.random() * gameCount)
-    );
+  public getGame = async (id: string): Promise<NewGameResponse> => {
+    const game = await this.repository.getGameById(id);
     if (game) {
-      const maskedSolution = this.generateMask(game.solution);
+      const maskedSolution = this.generateMask(game.solution, "");
       const encryptedSolution = this.encrypt(game.solution);
       return {
         id: game.id,
@@ -36,41 +45,70 @@ class GameManager {
     }
   };
 
-  public makeGuess = (
-    encryptedSolution: string,
-    guess: string
-  ): Array<number> => {
-    const solution = this.decrypt(encryptedSolution).toUpperCase();
-    const upperGuess = guess.toUpperCase();
-    let result = new Array<number>();
-    solution.split("").forEach((char, index) => {
-      if (char === upperGuess) {
-        result.push(index);
-      }
-    });
-    console.log(solution);
-    return result;
+  public getRandomGame = async (): Promise<NewGameResponse> => {
+    const gameCount = await this.repository.count();
+    const game = await this.repository.getGameByIndex(
+      Math.floor(Math.random() * gameCount)
+    );
+    if (game) {
+      const maskedSolution = this.generateMask(game.solution, "");
+      const encryptedSolution = this.encrypt(game.solution);
+      return {
+        id: game.id,
+        encryptedSolution: encryptedSolution,
+        maskedSolution: maskedSolution,
+      };
+    } else {
+      // TODO: Handle errors and undefined games
+      return {
+        id: "",
+        encryptedSolution: "",
+        maskedSolution: "",
+      };
+    }
   };
 
-  private generateMask = (source: string): string => {
-    let result = "";
-    let blanks = 0;
+  public getSolution = async (id: string): Promise<string> => {
+    const game = await this.repository.getGameById(id);
+    if (game) {
+      return game.solution;
+    } else {
+      return "";
+    }
+  };
 
+  public makeGuess = (guess: Guess): GuessResponse => {
+    const solution = this.decrypt(guess.encryptedSolution).toUpperCase();
+    const upperGuess = guess.guesses.toUpperCase();
+    const maskedSolution = this.generateMask(solution, guess.guesses);
+    let gameStatus: GameStatus;
+    if (maskedSolution.toUpperCase() === solution.toUpperCase()) {
+      gameStatus = "win";
+    } else if (guess.guesses.length >= 6) {
+      gameStatus = "gameOver";
+    } else {
+      gameStatus = "inProgress";
+    }
+
+    return {
+      maskedSolution: maskedSolution,
+      gameStatus: gameStatus,
+    };
+  };
+
+  private generateMask = (source: string, keepChars: string): string => {
+    let result = "";
+    const keepCharArray = keepChars.toUpperCase().split("");
     source.split("").forEach((char) => {
-      if (char.toUpperCase() !== char.toLocaleLowerCase()) {
-        blanks++;
+      if (
+        char.toUpperCase() !== char.toLocaleLowerCase() &&
+        !keepCharArray.some((x) => x === char.toUpperCase())
+      ) {
+        result += "_";
       } else {
-        if (blanks > 0) {
-          result += blanks + "_";
-          blanks = 0;
-        }
         result += char;
       }
     });
-
-    if (blanks > 0) {
-      result += blanks + "_";
-    }
 
     return result;
   };
