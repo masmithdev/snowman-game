@@ -4,8 +4,11 @@ This is a pretty lame Hangman clone (that uses a scary Snowman instead of hangin
 
 ## Technologies used so far
 
-- React (using a Vite template)
-- MobX for state management
+- Frontend
+  - React (using a Vite template)
+  - MobX for state management
+- Backend
+  - Express JS
 
 ## Overview of the project
 
