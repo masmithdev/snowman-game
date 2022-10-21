@@ -9,7 +9,7 @@ function Scaffold() {
   const game = useGame();
 
   useEffect(() => {
-    game.newGame("Harry Potter and the Philosopher's Stone");
+    game.newGame();
   }, []);
 
   return (

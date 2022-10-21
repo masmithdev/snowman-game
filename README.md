@@ -7,6 +7,7 @@ This is a pretty lame Hangman clone (that uses a scary Snowman instead of hangin
 - Frontend
   - React (using a Vite template)
   - MobX for state management
+  - Axios
 - Backend
   - Express JS
 
@@ -14,9 +15,15 @@ This is a pretty lame Hangman clone (that uses a scary Snowman instead of hangin
 
 This is actually a remake of a project that I built a few years ago. The code for the original was unfortunately lost, but fortunately I retained the original images.
 
-The main frontend of the game is built using React. At the moment the phrases used in the game will be stored in the front-end, but I would like to extend the project to use an ExpressJS backend to deliver the games, along with guesses being sent to the server insted of the solution being stored in front-end code.
+The main frontend of the game is built using React (using the Vite template), and incorporates state management using MobX, and Axios for accessing the API backend.
+
+The API Backend is built using Express. The games are currently stored in a hardcoded array, but this will eventually be replaced with a simple database, possibly SQLite due to the very simple needs of the application.
 
 ## Project Progress
+
+### 2022-10-21 day 3
+
+Refactored the front end to use the API. This resulted in most game logic now being removed from the front end.
 
 ### 2022-10-18 Day 2
 

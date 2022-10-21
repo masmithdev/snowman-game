@@ -1,43 +1,36 @@
-import React, { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import React from "react";
 import { useGame } from "../domain/GameProvider";
+import { Letter } from "../domain/GameStore";
 import Button from "./Button";
 import "./keyboardKey.css";
 
-export type ButtonState =
-  | "enabled"
-  | "checking"
-  | "correct"
-  | "wrong"
-  | "disabled";
 interface Props {
-  letter: string;
-  buttonState: ButtonState;
+  letter: Letter;
 }
 
-const KeyboardKey = ({ letter, buttonState }: Props) => {
+const KeyboardKey = observer(({ letter }: Props) => {
   const game = useGame();
-
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    if (buttonState === "enabled") {
-      console.log("guessing" + letter);
-      game.makeGuess(letter);
+    if (letter.status === "open") {
+      game.makeGuess(letter.letter);
     }
   };
 
   let stateClass = "";
-  if (buttonState === "correct") {
+  if (letter.status === "correct") {
     stateClass = "correct";
-  } else if (buttonState === "wrong") {
+  } else if (letter.status === "wrong") {
     stateClass = "wrong";
-  } else if (buttonState === "checking") {
+  } else if (letter.status === "guessing") {
     stateClass = "busy";
   }
 
   return (
     <div className={`keyboard-key ${stateClass}`}>
-      <Button onClick={handleClick}>{letter}</Button>
+      <Button onClick={handleClick}>{letter.letter}</Button>
     </div>
   );
-};
+});
 
 export default KeyboardKey;

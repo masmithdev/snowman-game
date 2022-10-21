@@ -79,7 +79,6 @@ class GameManager {
 
   public makeGuess = (guess: Guess): GuessResponse => {
     const solution = this.decrypt(guess.encryptedSolution).toUpperCase();
-    const upperGuess = guess.guesses.toUpperCase();
     const maskedSolution = this.generateMask(solution, guess.guesses);
     let gameStatus: GameStatus;
     if (maskedSolution.toUpperCase() === solution.toUpperCase()) {

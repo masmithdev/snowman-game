@@ -5,7 +5,7 @@ import "./solution.css";
 const Solution = observer(() => {
   const game = useGame();
 
-  return <div className="solution">{game.answer}</div>;
+  return <div className="solution">{game.maskedSolution}</div>;
 });
 
 export default Solution;
