@@ -4,6 +4,7 @@ import Solution from "./Solution";
 import { useGame } from "../domain/GameProvider";
 import Snowman from "./Snowman";
 import "./scaffold.css";
+import NewGameButton from "./NewGameButton";
 
 function Scaffold() {
   const game = useGame();
@@ -17,6 +18,7 @@ function Scaffold() {
       <Snowman />
       <Solution />
       <Keyboard />
+      <NewGameButton />
     </div>
   );
 }

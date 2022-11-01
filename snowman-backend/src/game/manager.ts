@@ -83,10 +83,18 @@ class GameManager {
     let gameStatus: GameStatus;
     if (maskedSolution.toUpperCase() === solution.toUpperCase()) {
       gameStatus = "win";
-    } else if (guess.guesses.length >= 6) {
-      gameStatus = "gameOver";
     } else {
-      gameStatus = "inProgress";
+      let badGuesses = 0;
+      guess.guesses.split("").forEach((x) => {
+        if (solution.toUpperCase().indexOf(x.toUpperCase()) < 0) {
+          badGuesses++;
+        }
+      });
+      if (badGuesses >= 6) {
+        gameStatus = "gameOver";
+      } else {
+        gameStatus = "inProgress";
+      }
     }
 
     return {

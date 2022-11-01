@@ -12,7 +12,7 @@ const games: Array<Game> = [
   },
   {
     id: "0002",
-    solution: "Never Ending Story",
+    solution: "The Never Ending Story",
   },
 ];
 

@@ -6,15 +6,11 @@ import KeyboardKey from "./KeyboardKey";
 const Keyboard = observer(() => {
   const game = useGame();
 
-  if (game.gameState !== "busy") {
-    const buttons = game.guesses.map((letter) => (
-      <KeyboardKey key={`button_${letter.letter}`} letter={letter} />
-    ));
+  const buttons = game.guesses.map((letter) => (
+    <KeyboardKey key={`button_${letter.letter}`} letter={letter} />
+  ));
 
-    return <div className="keyboard">{buttons}</div>;
-  } else {
-    return <div>busy</div>;
-  }
+  return <div className="keyboard">{buttons}</div>;
 });
 
 export default Keyboard;

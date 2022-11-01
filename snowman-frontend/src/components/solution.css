@@ -1,4 +1,8 @@
 .solution {
+  min-height: 4.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: monospace;
   text-align: center;
   font-size: 1.6rem;

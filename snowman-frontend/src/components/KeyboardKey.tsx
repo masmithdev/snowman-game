@@ -22,7 +22,11 @@ const KeyboardKey = observer(({ letter }: Props) => {
     stateClass = "correct";
   } else if (letter.status === "wrong") {
     stateClass = "wrong";
-  } else if (letter.status === "guessing") {
+  } else if (
+    letter.status === "guessing" ||
+    game.gameState === "init" ||
+    game.gameState === "busy"
+  ) {
     stateClass = "busy";
   }
 

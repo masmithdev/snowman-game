@@ -4,5 +4,5 @@
   flex-direction: column;
   align-items: stretch;
   justify-items: center;
-  justify-content: center;
+  justify-content: start;
 }

@@ -18,7 +18,7 @@ class GameStore {
   public gameId: string = "";
   public maskedSolution: string = "";
   public guesses: Array<Letter>;
-  public gameState: "init" | "busy" | "ready" | "error";
+  public gameState: "init" | "busy" | "ready" | "error" | "won" | "gameOver";
 
   private encryptedSolution: string = "";
   private service: GameService;
@@ -39,30 +39,38 @@ class GameStore {
   }
 
   public *makeGuess(letter: string) {
-    const upperLetter = letter.toUpperCase();
-    try {
-      const letter = this.guesses.find((x) => x.letter === upperLetter);
-      if (letter) {
-        letter.status = "guessing";
-        const guesses = this.guesses
-          .filter((x) => x.status !== "open")
-          .map((x) => x.letter)
-          .join("");
-        const guessResponse: GuessResponse = yield this.service.makeGuess({
-          guesses: guesses,
-          encryptedSolution: this.encryptedSolution,
-        });
-        console.log(guessResponse);
-        this.maskedSolution = guessResponse.maskedSolution;
-        if (this.maskedSolution.toUpperCase().indexOf(upperLetter) >= 0) {
-          letter.status = "correct";
-        } else {
-          letter.status = "wrong";
+    if (this.gameState === "ready") {
+      const upperLetter = letter.toUpperCase();
+      try {
+        const letter = this.guesses.find((x) => x.letter === upperLetter);
+        if (letter && letter!.status === "open") {
+          letter.status = "guessing";
+          const guesses = this.guesses
+            .filter((x) => x.status !== "open")
+            .map((x) => x.letter)
+            .join("");
+          const guessResponse: GuessResponse = yield this.service.makeGuess({
+            guesses: guesses,
+            encryptedSolution: this.encryptedSolution,
+          });
+          console.log(guessResponse);
+          this.maskedSolution = guessResponse.maskedSolution;
+          if (this.maskedSolution.toUpperCase().indexOf(upperLetter) >= 0) {
+            letter.status = "correct";
+          } else {
+            letter.status = "wrong";
+          }
+
+          if (guessResponse.gameStatus === "gameOver") {
+            this.gameState = "gameOver";
+          } else if (guessResponse.gameStatus === "win") {
+            this.gameState = "won";
+          }
         }
+        //guessResponse.gameStatus;
+      } catch (e) {
+        // TODO: shurg?
       }
-      //guessResponse.gameStatus;
-    } catch (e) {
-      // TODO: shurg?
     }
   }
 
@@ -83,7 +91,7 @@ class GameStore {
   }
 
   get guessCount() {
-    return this.guesses.length;
+    return this.guesses.filter((x) => x.status === "wrong").length;
   }
 }
 

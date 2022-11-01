@@ -1,0 +1,14 @@
+.new-game-button {
+  width: 100%;
+  height: 1.5em;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.new-game-button.busy .button {
+  background-color: #ccc;
+  color: #999;
+  border-color: #999;
+}

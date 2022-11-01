@@ -4,16 +4,19 @@
   margin: 0.1rem 0.3rem;
 }
 
-.correct .button {
+.keyboard-key.correct .button {
   background-color: #0f0;
 }
 
-.wrong .button {
+.keyboard-key.wrong .button {
   background-color: #f00;
 }
 
-.busy .button {
+.keyboard-key.busy .button {
   animation: throb 0.5s ease-in-out infinite;
+  background-color: #ccc;
+  color: #999;
+  border-color: #999;
 }
 
 @keyframes throb {
