@@ -21,6 +21,10 @@ The API Backend is built using Express. The games are currently stored in a hard
 
 ## Project Progress
 
+### 2022-11-01 day 4
+
+Added the Snowman visuals and introduced a game win and game over display. Also added a New Game button.
+
 ### 2022-10-21 day 3
 
 Refactored the front end to use the API. This resulted in most game logic now being removed from the front end.
